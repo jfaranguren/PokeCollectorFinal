@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -22,8 +23,7 @@ public class Executable {
 
     public void initializer() {
         input = new Scanner(System.in);
-        controller = new Controller(); //
-
+        controller = new Controller();
     }
 
     public void menu() {
@@ -67,6 +67,7 @@ public class Executable {
                                 break;
                         }
                         break;
+                    
                     case 2:
                         System.out.println("REGISTRO DE ACCESORIO");
                         System.out.println("Digite una opcion");
@@ -125,7 +126,8 @@ public class Executable {
             } catch (InputMismatchException e) {
                 System.out.println("Entrada invalida, volviendo al menu principal");
 
-            } finally {
+            } 
+            finally {
                 if (option != 0) {
                     backToMenu();
                 }

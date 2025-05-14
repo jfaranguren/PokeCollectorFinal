@@ -19,27 +19,48 @@ public class Controller {
 
         try {
             loadCollectionFromFile();
-        } catch (Exception e) {
-            testData();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (EOFException e) {
+           // e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    //Incompleto
-    public void saveCollectionToFile() throws FileNotFoundException, IOException{
-
-        File dataBase = new File("data\\MyCollection.txt");
-        dataBase.createNewFile();   
 
     }
 
-    //Incompleto
-    public void loadCollectionFromFile() throws ClassNotFoundException, EOFException, FileNotFoundException, IOException {
+    public void saveCollectionToFile() throws FileNotFoundException, IOException {
+
+        File dataBase = new File("data\\MyCollection.txt");
+        dataBase.createNewFile();
+
+        ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(dataBase));
+
+        for (Collectable c : bigCollection) {
+            writer.writeObject(c);
+        }
+
+        writer.flush();
+        writer.close();
+
+    }
+
+    // Incompleto
+    public void loadCollectionFromFile() throws ClassNotFoundException, IOException, EOFException {
+        // throws ClassNotFoundException, EOFException, FileNotFoundException,
+        // IOException {
 
         File dataBase = new File("data\\MyCollection.txt");
 
-        if(bigCollection.isEmpty()){
-            throw new EOFException();
+        ObjectInputStream reader = new ObjectInputStream(new FileInputStream(dataBase));
+
+        Collectable temp = null;
+
+        while ((temp = (Collectable) reader.readObject()) != null) {
+            bigCollection.add(temp);
         }
+
+        reader.close();
 
     }
 
@@ -116,7 +137,7 @@ public class Controller {
 
         for (int i = 0; i < bigCollection.size(); i++) {
 
-            list += (i + 1) + "|" + bigCollection.get(i).getName()+ "\n"; // collection[i] es un objeto PokemonCard
+            list += (i + 1) + "|" + bigCollection.get(i).getName() + "\n"; // collection[i] es un objeto PokemonCard
 
         }
         return list;
@@ -276,7 +297,6 @@ public class Controller {
 
     }
 
-
     public PokemonType calculatePokemonType(int option) {
 
         PokemonType temp = PokemonType.AGUA;
@@ -294,7 +314,7 @@ public class Controller {
                 temp = PokemonType.ELECTRICO;
                 break;
             default:
-                temp = PokemonType.AGUA; //Cambiar?
+                temp = PokemonType.AGUA; // Cambiar?
                 break;
         }
 
@@ -314,7 +334,6 @@ public class Controller {
         return msg + "\n";
 
     }
-
 
     public Rarity calculateRarity(int option) {
 
